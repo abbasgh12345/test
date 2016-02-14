@@ -16,7 +16,8 @@ local function check_member_autorealm(cb_extra, success, result)
           lock_name = 'yes',
           lock_photo = 'no',
           lock_member = 'no',
-          flood = 'yes'
+          flood = 'yes',
+          arabic_lock = 'no'
         }
       }
       save_data(_config.moderation.data, data)
@@ -46,7 +47,8 @@ local function check_member_realm_add(cb_extra, success, result)
           lock_name = 'yes',
           lock_photo = 'no',
           lock_member = 'no',
-          flood = 'yes'
+          flood = 'yes',
+          arabic_lock = 'no'
         }
       }
       save_data(_config.moderation.data, data)
@@ -79,6 +81,7 @@ function check_member_group(cb_extra, success, result)
           lock_photo = 'no',
           lock_member = 'no',
           flood = 'yes',
+          arabic_lock lock = 'no'
         }
       }
       save_data(_config.moderation.data, data)
@@ -111,6 +114,7 @@ local function check_member_modadd(cb_extra, success, result)
           lock_photo = 'no',
           lock_member = 'no',
           flood = 'yes',
+          arabic_lock = 'no'
         }
       }
       save_data(_config.moderation.data, data)
@@ -733,25 +737,25 @@ local function run(msg, matches)
       load_photo(msg.id, set_group_photo, msg)
     end
   end
-  if matches[1] == 'add' and not matches[2] then
+  if matches[1] == 'gpadd' and not matches[2] then
     if is_realm(msg) then
        return 'Error: Already a realm.'
     end
     print("group "..msg.to.print_name.."("..msg.to.id..") added")
     return modadd(msg)
   end
-   if matches[1] == 'add' and matches[2] == 'realm' then
+   if matches[1] == 'gpadd' and matches[2] == 'realm' then
     if is_group(msg) then
        return 'Error: Already a group.'
     end
     print("group "..msg.to.print_name.."("..msg.to.id..") added as a realm")
     return realmadd(msg)
   end
-  if matches[1] == 'rem' and not matches[2] then
+  if matches[1] == 'gprem' and not matches[2] then
     print("group "..msg.to.print_name.."("..msg.to.id..") removed")
     return modrem(msg)
   end
-  if matches[1] == 'rem' and matches[2] == 'realm' then
+  if matches[1] == 'gprem' and matches[2] == 'realm' then
     print("group "..msg.to.print_name.."("..msg.to.id..") removed as a realm")
     return realmrem(msg)
   end
@@ -1220,9 +1224,9 @@ end
 
 return {
   patterns = {
-  "^[!/](add)$",
+  "^[!/](gpadd)$",
   "^[!/](add) (realm)$",
-  "^[!/](rem)$",
+  "^[!/](gprem)$",
   "^[!/](rem) (realm)$",
   "^[!/](rules)$",
   "^[!/](about)$",
